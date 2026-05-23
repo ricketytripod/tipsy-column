@@ -66,17 +66,6 @@
     .qty-btn:active { transform: scale(0.95); }
     .qty-val { font-size: 16px; font-weight: 500; min-width: 24px; text-align: center; color: var(--ink); font-family: 'Playfair Display', serif; }
 
-    /* Custom item */
-    .custom-item { border: 1px dashed var(--rule); border-radius: 2px; padding: 1rem; margin-bottom: 10px; background: #fffef9; }
-    .custom-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 10px; }
-    .custom-row .field-group { flex: 1; min-width: 120px; }
-    .custom-row .field-group.price-group { max-width: 100px; }
-    .custom-row input[type="text"] { font-size: 14px; padding: 8px 10px; }
-    .add-custom-btn { width: 100%; padding: 10px; background: none; border: 1px dashed var(--rule); border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--muted); cursor: pointer; letter-spacing: 0.06em; transition: background 0.15s, color 0.15s; margin-top: 2px; }
-    .add-custom-btn:hover { background: var(--amber-pale); color: var(--amber); border-color: var(--amber); }
-    .remove-custom-btn { padding: 8px 12px; background: none; border: 1px solid var(--rule); border-radius: 2px; font-size: 13px; color: var(--muted); cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; align-self: flex-end; }
-    .remove-custom-btn:hover { background: var(--error-bg); color: var(--error); border-color: #e8b4b4; }
-
     /* Summary */
     .summary { background: var(--parchment); border: 1px solid var(--rule); border-radius: 2px; padding: 1rem 1.25rem; margin-top: 1rem; display: none; }
     .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 3px 0; }
@@ -193,8 +182,6 @@
     na:    { label: 'Non-alcoholic',  price: 4.00 }
   };
   const qty = { beer: 0, cider: 0, na: 0 };
-  let customItems = []; // { id, label, price, qty }
-  let customCounter = 0;
 
   function change(key, delta) {
     qty[key] = Math.max(0, qty[key] + delta);
@@ -202,69 +189,7 @@
     updateSummary();
   }
 
-  function changeCustom(id, delta) {
-    const item = customItems.find(i => i.id === id);
-    if (!item) return;
-    item.qty = Math.max(0, item.qty + delta);
-    document.getElementById('cqty-' + id).textContent = item.qty;
-    updateSummary();
-  }
-
-  function addCustomItem() {
-    const id = ++customCounter;
-    customItems.push({ id, label: '', price: 4.00, qty: 0 });
-
-    const container = document.getElementById('custom-items');
-    const div = document.createElement('div');
-    div.className = 'custom-item';
-    div.id = 'custom-' + id;
-    div.innerHTML = `
-      <div class="custom-row">
-        <div class="field-group">
-          <label class="field-label">Item name</label>
-          <input type="text" id="clabel-${id}" placeholder="e.g. Sparkling water" oninput="updateCustomLabel(${id})" />
-        </div>
-        <div class="field-group price-group">
-          <label class="field-label">Price ($)</label>
-          <input type="text" id="cprice-${id}" value="4.00" oninput="updateCustomPrice(${id})" style="text-align:right" />
-        </div>
-        <button class="remove-custom-btn" onclick="removeCustomItem(${id})">Remove</button>
-      </div>
-      <div class="qty-row">
-        <span class="qty-label">Qty</span>
-        <div class="qty-control">
-          <button class="qty-btn" onclick="changeCustom(${id},-1)" aria-label="Remove item">−</button>
-          <span class="qty-val" id="cqty-${id}">0</span>
-          <button class="qty-btn" onclick="changeCustom(${id},1)" aria-label="Add item">+</button>
-        </div>
-      </div>`;
-    container.appendChild(div);
-    document.getElementById('clabel-' + id).focus();
-    updateSummary();
-  }
-
-  function updateCustomLabel(id) {
-    const item = customItems.find(i => i.id === id);
-    if (item) item.label = document.getElementById('clabel-' + id).value.trim();
-    updateSummary();
-  }
-
-  function updateCustomPrice(id) {
-    const item = customItems.find(i => i.id === id);
-    if (!item) return;
-    const val = parseFloat(document.getElementById('cprice-' + id).value);
-    item.price = isNaN(val) ? 0 : val;
-    updateSummary();
-  }
-
-  function removeCustomItem(id) {
-    customItems = customItems.filter(i => i.id !== id);
-    const el = document.getElementById('custom-' + id);
-    if (el) el.remove();
-    updateSummary();
-  }
-
-  function updateSummary() {
+    function updateSummary() {
     let total = 0, hasAny = false, lines = '';
 
     Object.keys(baseItems).forEach(k => {
