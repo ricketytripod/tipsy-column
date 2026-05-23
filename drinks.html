@@ -31,33 +31,22 @@
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8640a' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
     .page-wrap { max-width: 540px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-
-    /* Header */
     .header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 2px solid var(--rule); margin-bottom: 2rem; position: relative; }
     .header::before { content: '◆'; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--rule); background: var(--cream); padding: 0 8px; }
     .header-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; font-weight: 500; }
     .header-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 3rem); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.01em; }
     .header-title span { color: var(--amber); }
     .header-tagline { margin-top: 0.75rem; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-style: italic; }
-
-    /* Cards */
     .card { background: #fffef9; border: 1px solid var(--rule); border-radius: 2px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; box-shadow: 3px 3px 0 rgba(184,100,10,0.08); }
     .card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 1.25rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--parchment); display: flex; align-items: center; gap: 8px; }
-
-    /* Name input */
     .field-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 6px; display: block; }
     input[type="text"] { width: 100%; padding: 10px 14px; background: var(--amber-pale); border: 1px solid var(--rule); border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--ink); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
     input[type="text"]:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(184,100,10,0.1); }
-
-    /* Menu items */
-    .menu-item { border: 1px solid var(--parchment); border-radius: 2px; padding: 1rem; margin-bottom: 10px; background: var(--amber-pale); transition: border-color 0.15s; }
+    .menu-item { border: 1px solid var(--parchment); border-radius: 2px; padding: 1rem; margin-bottom: 10px; background: var(--amber-pale); }
     .menu-item:last-child { margin-bottom: 0; }
     .menu-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .menu-item-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; color: var(--ink); }
     .menu-item-price { font-size: 13px; color: var(--amber); font-weight: 500; letter-spacing: 0.04em; }
-    .menu-item-desc { font-size: 12px; color: var(--muted); margin-bottom: 10px; font-style: italic; }
-
-    /* Qty */
     .qty-row { display: flex; align-items: center; gap: 10px; }
     .qty-label { font-size: 12px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; min-width: 48px; }
     .qty-control { display: flex; align-items: center; gap: 8px; }
@@ -65,20 +54,14 @@
     .qty-btn:hover { background: var(--parchment); }
     .qty-btn:active { transform: scale(0.95); }
     .qty-val { font-size: 16px; font-weight: 500; min-width: 24px; text-align: center; color: var(--ink); font-family: 'Playfair Display', serif; }
-
-    /* Summary */
     .summary { background: var(--parchment); border: 1px solid var(--rule); border-radius: 2px; padding: 1rem 1.25rem; margin-top: 1rem; display: none; }
     .summary-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 3px 0; }
     .summary-divider { border: none; border-top: 1px solid var(--rule); margin: 8px 0; }
     .summary-total { display: flex; justify-content: space-between; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--ink); }
-
-    /* Submit */
     .submit-btn { width: 100%; padding: 14px; background: var(--amber); color: #fffef9; border: none; border-radius: 2px; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.04em; transition: background 0.15s, transform 0.1s; margin-top: 0.5rem; }
     .submit-btn:hover { background: #9a5208; }
     .submit-btn:active { transform: scale(0.99); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    /* Messages */
     .msg { border-radius: 2px; padding: 12px 16px; font-size: 14px; margin-bottom: 1rem; display: none; }
     .msg-success { background: var(--success-bg); color: var(--success); border: 1px solid #a3d4b0; }
     .msg-error { background: var(--error-bg); color: var(--error); border: 1px solid #e8b4b4; }
@@ -102,13 +85,12 @@
   <div class="card">
     <div class="card-title"><span>✦</span> Your name</div>
     <label class="field-label" for="person-name">First name</label>
-    <input type="text" id="person-name" placeholder="e.g. James" autocomplete="given-name" />
+    <input type="text" id="person-name" placeholder="e.g. Alex" autocomplete="given-name" />
   </div>
 
   <div class="card">
     <div class="card-title"><span>✦</span> From the bar</div>
 
-    <!-- Beer -->
     <div class="menu-item">
       <div class="menu-item-header">
         <div class="menu-item-name">Beer</div>
@@ -124,7 +106,6 @@
       </div>
     </div>
 
-    <!-- Cider -->
     <div class="menu-item">
       <div class="menu-item-header">
         <div class="menu-item-name">Cider</div>
@@ -140,7 +121,6 @@
       </div>
     </div>
 
-    <!-- Non-alcoholic -->
     <div class="menu-item">
       <div class="menu-item-header">
         <div class="menu-item-name">Non-alcoholic</div>
@@ -173,13 +153,12 @@
 </div>
 
 <script>
-  // !! REPLACE THIS with your Google Apps Script Web App URL after setup !!
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGFjUfFeWa4yM8uSbinYQTsZ9DRloF49zjJkrmumH0dvrAzFe5t0UyWvg9W8Zy55LN/exec';
 
-  const baseItems = {
-    beer:  { label: 'Beer',           price: 4.00 },
-    cider: { label: 'Cider',          price: 4.00 },
-    na:    { label: 'Non-alcoholic',  price: 4.00 }
+  const items = {
+    beer:  { label: 'Beer',          price: 4.00 },
+    cider: { label: 'Cider',         price: 4.00 },
+    na:    { label: 'Non-alcoholic', price: 4.00 }
   };
   const qty = { beer: 0, cider: 0, na: 0 };
 
@@ -189,29 +168,17 @@
     updateSummary();
   }
 
-    function updateSummary() {
+  function updateSummary() {
     let total = 0, hasAny = false, lines = '';
-
-    Object.keys(baseItems).forEach(k => {
+    Object.keys(items).forEach(k => {
       const q = qty[k];
       if (q > 0) {
         hasAny = true;
-        const sub = q * baseItems[k].price;
+        const sub = q * items[k].price;
         total += sub;
-        lines += `<div class="summary-row"><span>${q}× ${baseItems[k].label}</span><span>$${sub.toFixed(2)}</span></div>`;
+        lines += `<div class="summary-row"><span>${q}× ${items[k].label}</span><span>$${sub.toFixed(2)}</span></div>`;
       }
     });
-
-    customItems.forEach(item => {
-      if (item.qty > 0) {
-        hasAny = true;
-        const label = item.label || 'Custom item';
-        const sub = item.qty * item.price;
-        total += sub;
-        lines += `<div class="summary-row"><span>${item.qty}× ${label}</span><span>$${sub.toFixed(2)}</span></div>`;
-      }
-    });
-
     document.getElementById('summary-lines').innerHTML = lines;
     document.getElementById('summary-total-val').textContent = '$' + total.toFixed(2);
     document.getElementById('order-summary').style.display = hasAny ? 'block' : 'none';
@@ -220,35 +187,23 @@
   async function submitOrder() {
     const name = document.getElementById('person-name').value.trim();
     if (!name) { document.getElementById('person-name').focus(); showMsg('error', 'Please enter your name.'); return; }
-
-    const baseSelected = Object.keys(qty).some(k => qty[k] > 0);
-    const customSelected = customItems.some(i => i.qty > 0);
-    if (!baseSelected && !customSelected) { showMsg('error', 'Please select at least one drink.'); return; }
+    if (!Object.keys(qty).some(k => qty[k] > 0)) { showMsg('error', 'Please select at least one drink.'); return; }
 
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span>Placing order...';
 
-    // Build a readable order string for the sheet
     const orderParts = [];
-    Object.keys(baseItems).forEach(k => {
-      if (qty[k] > 0) orderParts.push(`${qty[k]}× ${baseItems[k].label}`);
-    });
-    customItems.forEach(item => {
-      if (item.qty > 0) orderParts.push(`${item.qty}× ${item.label || 'Custom'} ($${item.price.toFixed(2)})`);
-    });
-
-    const totalVal = Object.keys(qty).reduce((s,k) => s + qty[k]*baseItems[k].price, 0)
-                   + customItems.reduce((s,i) => s + i.qty*i.price, 0);
+    Object.keys(items).forEach(k => { if (qty[k] > 0) orderParts.push(`${qty[k]}× ${items[k].label}`); });
 
     const order = {
       name,
       beer: qty.beer,
       cider: qty.cider,
       nonAlcoholic: qty.na,
-      customItems: customItems.filter(i => i.qty > 0).map(i => `${i.qty}× ${i.label||'Custom'} @$${i.price.toFixed(2)}`).join('; '),
+      customItems: '—',
       orderSummary: orderParts.join(', '),
-      total: totalVal.toFixed(2),
+      total: Object.keys(qty).reduce((s,k) => s + qty[k] * items[k].price, 0).toFixed(2),
       timestamp: new Date().toLocaleString('en-CA', { timeZone: 'America/Toronto' })
     };
 
@@ -260,10 +215,7 @@
         body: JSON.stringify(order)
       });
       showMsg('success', '✓ Order received — see you Friday!');
-      // Reset
       Object.keys(qty).forEach(k => { qty[k] = 0; document.getElementById('qty-'+k).textContent = 0; });
-      customItems = [];
-      document.getElementById('custom-items').innerHTML = '';
       document.getElementById('person-name').value = '';
       document.getElementById('order-summary').style.display = 'none';
       btn.style.display = 'none';
