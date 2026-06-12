@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <title>The Tipsy Column — Summary</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1a1208;
+      --cream: #f5f0e8;
+      --parchment: #ede6d6;
+      --amber: #b8640a;
+      --amber-pale: #fdf3e3;
+      --rule: #c4a96b;
+      --muted: #7a6a52;
+      --success: #2d6a3f;
+      --success-bg: #eaf4ed;
+      --error: #8b2a2a;
+      --error-bg: #fdf0f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(196,169,107,0.12) 28px),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8640a' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .page-wrap { max-width: 700px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    .header { text-align: center; padding: 2.5rem 0 2rem; border-bottom: 2px solid var(--rule); margin-bottom: 2rem; position: relative; }
+    .header::before { content: '◆'; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--rule); background: var(--cream); padding: 0 8px; }
+    .header-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; font-weight: 500; }
+    .header-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 6vw, 2.6rem); font-weight: 700; color: var(--ink); line-height: 1.1; }
+    .header-title span { color: var(--amber); }
+    .header-tagline { margin-top: 0.75rem; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-style: italic; }
+
+    .refresh-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .last-updated { font-size: 12px; color: var(--muted); font-style: italic; }
+    .refresh-btn { padding: 8px 16px; background: var(--amber); color: #fffef9; border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+    .refresh-btn:hover { background: #9a5208; }
+    .refresh-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--ink); margin: 2rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 1.5px solid var(--rule); display: flex; align-items: center; gap: 8px; }
+
+    .card { background: #fffef9; border: 1px solid var(--rule); border-radius: 2px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 3px 3px 0 rgba(184,100,10,0.08); }
+
+    /* Cook list tiles */
+    .cook-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 1rem; }
+    .cook-tile { background: #fffef9; border: 1px solid var(--rule); border-radius: 2px; padding: 1rem; text-align: center; box-shadow: 3px 3px 0 rgba(184,100,10,0.08); }
+    .cook-tile.highlight { background: var(--amber-pale); border-color: var(--amber); }
+    .cook-num { font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 700; color: var(--amber); line-height: 1; }
+    .cook-lbl { font-size: 12px; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.07em; }
+
+    /* Tables */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th { text-align: left; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 500; padding: 6px 10px; border-bottom: 1px solid var(--rule); background: var(--amber-pale); }
+    .data-table td { padding: 8px 10px; border-bottom: 1px solid var(--parchment); color: var(--ink); vertical-align: middle; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--amber-pale); }
+    .data-table .total-row td { font-weight: 500; font-family: 'Playfair Display', serif; border-top: 1.5px solid var(--rule); border-bottom: none; background: var(--parchment); }
+    .tag { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 20px; margin: 1px; white-space: nowrap; }
+    .tag-yes { background: var(--success-bg); color: var(--success); }
+    .tag-no { background: var(--parchment); color: var(--muted); }
+    .tag-drink { background: var(--amber-pale); color: var(--amber); border: 1px solid var(--rule); }
+    .zero { color: var(--muted); }
+
+    /* Copy button */
+    .copy-btn { padding: 7px 14px; background: none; border: 1px solid var(--rule); border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--muted); cursor: pointer; transition: all 0.15s; float: right; margin-top: -2px; }
+    .copy-btn:hover { background: var(--amber-pale); color: var(--amber); border-color: var(--amber); }
+    .copy-btn.copied { background: var(--success-bg); color: var(--success); border-color: #a3d4b0; }
+
+    .loading { text-align: center; padding: 2rem; color: var(--muted); font-style: italic; font-size: 14px; }
+    .error-msg { background: var(--error-bg); color: var(--error); border: 1px solid #e8b4b4; border-radius: 2px; padding: 12px 16px; font-size: 13px; margin-bottom: 1rem; display: none; }
+    .empty-msg { color: var(--muted); font-size: 13px; font-style: italic; padding: 0.5rem 0; }
+    .footer-rule { text-align: center; margin-top: 3rem; color: var(--rule); font-size: 13px; letter-spacing: 0.2em; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(184,100,10,0.2); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px; margin-right: 6px; }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <header class="header">
+    <div class="header-eyebrow">Staff only &bull; Back of the office</div>
+    <h1 class="header-title">The Tipsy <span>Column</span></h1>
+    <div class="header-tagline">Order Summary &amp; Cook List</div>
+  </header>
+
+  <div class="refresh-bar">
+    <span class="last-updated" id="last-updated">Not yet loaded</span>
+    <button class="refresh-btn" id="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+  </div>
+
+  <div class="error-msg" id="error-msg"></div>
+
+  <!-- COOK LIST -->
+  <div class="section-title">🔥 Cook list</div>
+  <div id="cook-section"><div class="loading">Loading...</div></div>
+
+  <!-- PER-PERSON TABLE -->
+  <div class="section-title">
+    👤 Per-person orders
+    <button class="copy-btn" id="copy-btn" onclick="copyTable()">Copy table</button>
+  </div>
+  <div class="card" style="overflow-x:auto">
+    <div id="person-section"><div class="loading">Loading...</div></div>
+  </div>
+
+  <div class="footer-rule">◆ &nbsp; ◆ &nbsp; ◆</div>
+</div>
+
+<script>
+  const FOOD_URL  = 'https://script.google.com/macros/s/AKfycbzNV5bSswvNnbCasbYOMplN7zZHY1QZOmHvTmaLUJaDjSU-1Fj7_xQsq5-C_h_ix_WN/exec';
+  const DRINK_URL = 'https://script.google.com/macros/s/AKfycbyGFjUfFeWa4yM8uSbinYQTsZ9DRloF49zjJkrmumH0dvrAzFe5t0UyWvg9W8Zy55LN/exec';
+
+  let foodData = [];
+  let drinkData = [];
+
+  async function loadAll() {
+    const btn = document.getElementById('refresh-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Loading...';
+    document.getElementById('error-msg').style.display = 'none';
+
+    try {
+      const [food, drinks] = await Promise.all([
+        fetchData(FOOD_URL),
+        fetchData(DRINK_URL)
+      ]);
+      foodData = food;
+      drinkData = drinks;
+      renderCookList();
+      renderPersonTable();
+      document.getElementById('last-updated').textContent =
+        'Last updated: ' + new Date().toLocaleTimeString('en-CA', { hour: '2-digit', minute: '2-digit' });
+    } catch(e) {
+      showError('Could not load data. Make sure both Apps Scripts have been redeployed with the doGet function.');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '↻ Refresh';
+  }
+
+  async function fetchData(url) {
+    const res = await fetch(url);
+    const text = await res.text();
+    try { return JSON.parse(text); } catch(e) { return []; }
+  }
+
+  function num(val) {
+    const n = parseInt(val, 10);
+    return isNaN(n) ? 0 : n;
+  }
+  function yes(val) { return String(val).trim().toLowerCase() === 'yes'; }
+
+  function renderCookList() {
+    const section = document.getElementById('cook-section');
+    if (!foodData.length && !drinkData.length) {
+      section.innerHTML = '<p class="empty-msg">No orders yet.</p>';
+      return;
+    }
+
+    // Food tallies
+    let totalBurgers = 0, doublePattys = 0, burgerCheese = 0, burgerToast = 0;
+    let totalSausages = 0, sausageCheese = 0, sausageToast = 0;
+    foodData.forEach(r => {
+      const b = num(r['Burgers']), s = num(r['Sausages']);
+      totalBurgers += b;
+      totalSausages += s;
+      if (yes(r['Burger — Double Patty'])) doublePattys += b;
+      if (yes(r['Burger — Cheese']))       burgerCheese += b;
+      if (yes(r['Burger — Toasted Bun']))  burgerToast  += b;
+      if (yes(r['Sausage — Cheese']))      sausageCheese += s;
+      if (yes(r['Sausage — Toasted Bun'])) sausageToast  += s;
+    });
+
+    // Total patties needed (double patty orders need 2 patties per burger)
+    const totalPatties = totalBurgers + doublePattys;
+
+    // Drink tallies
+    let beer = 0, cider = 0, na = 0;
+    drinkData.forEach(r => {
+      beer  += num(r['Beer']);
+      cider += num(r['Cider']);
+      na    += num(r['Non-Alcoholic']);
+    });
+
+    section.innerHTML = `
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;">🍔 Burgers</div>
+        <div class="cook-grid">
+          <div class="cook-tile highlight"><div class="cook-num">${totalPatties}</div><div class="cook-lbl">Patties total</div></div>
+          <div class="cook-tile"><div class="cook-num">${doublePattys}</div><div class="cook-lbl">Double patty orders</div></div>
+          <div class="cook-tile"><div class="cook-num">${burgerCheese}</div><div class="cook-lbl">With cheese</div></div>
+          <div class="cook-tile"><div class="cook-num">${burgerToast}</div><div class="cook-lbl">Toasted buns</div></div>
+        </div>
+      </div>
+      <div style="margin-bottom:0.75rem">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;">🌭 Sausages</div>
+        <div class="cook-grid">
+          <div class="cook-tile highlight"><div class="cook-num">${totalSausages}</div><div class="cook-lbl">Sausages total</div></div>
+          <div class="cook-tile"><div class="cook-num">${sausageCheese}</div><div class="cook-lbl">With cheese</div></div>
+          <div class="cook-tile"><div class="cook-num">${sausageToast}</div><div class="cook-lbl">Toasted buns</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500;">🍺 Drinks</div>
+        <div class="cook-grid">
+          <div class="cook-tile highlight"><div class="cook-num">${beer}</div><div class="cook-lbl">Beer</div></div>
+          <div class="cook-tile highlight"><div class="cook-num">${cider}</div><div class="cook-lbl">Cider</div></div>
+          <div class="cook-tile highlight"><div class="cook-num">${na}</div><div class="cook-lbl">Non-alcoholic</div></div>
+        </div>
+      </div>`;
+  }
+
+  function renderPersonTable() {
+    const section = document.getElementById('person-section');
+
+    // Build a map of all names across both sheets
+    const names = new Set();
+    foodData.forEach(r => { if (r['Name']) names.add(r['Name']); });
+    drinkData.forEach(r => { if (r['Name']) names.add(r['Name']); });
+
+    if (!names.size) {
+      section.innerHTML = '<p class="empty-msg">No orders yet.</p>';
+      return;
+    }
+
+    // Index by name (last order wins if duplicate)
+    const foodByName = {};
+    foodData.forEach(r => { if (r['Name']) foodByName[r['Name']] = r; });
+    const drinkByName = {};
+    drinkData.forEach(r => { if (r['Name']) drinkByName[r['Name']] = r; });
+
+    // Totals
+    let tBurgers = 0, tSausages = 0, tBeer = 0, tCider = 0, tNA = 0;
+
+    let rows = '';
+    Array.from(names).sort().forEach(name => {
+      const f = foodByName[name]  || {};
+      const d = drinkByName[name] || {};
+
+      const burgers  = num(f['Burgers']);
+      const sausages = num(f['Sausages']);
+      const beer     = num(d['Beer']);
+      const cider    = num(d['Cider']);
+      const na       = num(d['Non-Alcoholic']);
+
+      tBurgers  += burgers;
+      tSausages += sausages;
+      tBeer     += beer;
+      tCider    += cider;
+      tNA       += na;
+
+      // Build food extras tags
+      const foodExtras = [];
+      if (burgers > 0) {
+        let tag = burgers + '× Burger';
+        const extras = [];
+        if (yes(f['Burger — Double Patty'])) extras.push('double');
+        if (yes(f['Burger — Cheese']))       extras.push('cheese');
+        if (yes(f['Burger — Toasted Bun']))  extras.push('toasted');
+        if (extras.length) tag += ' (' + extras.join(', ') + ')';
+        foodExtras.push(`<span class="tag tag-yes">${tag}</span>`);
+      }
+      if (sausages > 0) {
+        let tag = sausages + '× Sausage';
+        const extras = [];
+        if (yes(f['Sausage — Cheese']))      extras.push('cheese');
+        if (yes(f['Sausage — Toasted Bun'])) extras.push('toasted');
+        if (extras.length) tag += ' (' + extras.join(', ') + ')';
+        foodExtras.push(`<span class="tag tag-yes">${tag}</span>`);
+      }
+
+      const drinkExtras = [];
+      if (beer  > 0) drinkExtras.push(`<span class="tag tag-drink">${beer}× Beer</span>`);
+      if (cider > 0) drinkExtras.push(`<span class="tag tag-drink">${cider}× Cider</span>`);
+      if (na    > 0) drinkExtras.push(`<span class="tag tag-drink">${na}× Non-alc</span>`);
+
+      rows += `<tr>
+        <td><strong>${name}</strong></td>
+        <td class="${burgers  ? '' : 'zero'}">${burgers  || '—'}</td>
+        <td class="${sausages ? '' : 'zero'}">${sausages || '—'}</td>
+        <td class="${beer     ? '' : 'zero'}">${beer     || '—'}</td>
+        <td class="${cider    ? '' : 'zero'}">${cider    || '—'}</td>
+        <td class="${na       ? '' : 'zero'}">${na       || '—'}</td>
+        <td>${foodExtras.join(' ') || '<span class="zero">—</span>'}</td>
+        <td>${drinkExtras.join(' ') || '<span class="zero">—</span>'}</td>
+      </tr>`;
+    });
+
+    section.innerHTML = `
+      <table class="data-table" id="person-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Burgers</th>
+            <th>Sausages</th>
+            <th>Beer</th>
+            <th>Cider</th>
+            <th>Non-alc</th>
+            <th>Food extras</th>
+            <th>Drinks</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+          <tr class="total-row">
+            <td>Totals</td>
+            <td>${tBurgers}</td>
+            <td>${tSausages}</td>
+            <td>${tBeer}</td>
+            <td>${tCider}</td>
+            <td>${tNA}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>`;
+  }
+
+  function copyTable() {
+    const table = document.getElementById('person-table');
+    if (!table) return;
+
+    // Build tab-separated text from the table (strips HTML tags)
+    const rows = Array.from(table.querySelectorAll('tr'));
+    const text = rows.map(row =>
+      Array.from(row.querySelectorAll('th, td'))
+        .map(cell => cell.innerText.trim())
+        .join('\t')
+    ).join('\n');
+
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy table'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-msg');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+
+  loadAll();
+</script>
+</body>
+</html>
