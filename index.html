@@ -35,22 +35,12 @@
     }
     .page-wrap { max-width: 540px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
     .header {
-      text-align: center;
-      padding: 2.5rem 0 2rem;
-      border-bottom: 2px solid var(--rule);
-      margin-bottom: 2rem;
-      position: relative;
+      text-align: center; padding: 2.5rem 0 2rem; border-bottom: 2px solid var(--rule);
+      margin-bottom: 2rem; position: relative;
     }
     .header::before {
-      content: '◆';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 12px;
-      color: var(--rule);
-      background: var(--cream);
-      padding: 0 8px;
+      content: '◆'; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+      font-size: 12px; color: var(--rule); background: var(--cream); padding: 0 8px;
     }
     .header-eyebrow { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem; font-weight: 500; }
     .header-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 8vw, 3rem); font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.01em; }
@@ -88,13 +78,28 @@
     .submit-btn:active { transform: scale(0.99); }
     .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     .msg { border-radius: 2px; padding: 12px 16px; font-size: 14px; margin-bottom: 1rem; display: none; }
-    .msg-success { background: var(--success-bg); color: var(--success); border: 1px solid #a3d4b0; }
     .msg-error { background: var(--error-bg); color: var(--error); border: 1px solid #e8b4b4; }
 
     /* Payment card */
     .payment-card { background: #fffef9; border: 1px solid var(--rule); border-radius: 2px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; box-shadow: 3px 3px 0 rgba(184,100,10,0.08); display: none; }
     .payment-amount { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--amber); text-align: center; margin: 0.5rem 0 1rem; }
     .payment-note { font-size: 14px; color: var(--muted); text-align: center; line-height: 1.7; }
+
+    /* Balance breakdown */
+    .balance-box { background: var(--amber-pale); border: 1px solid var(--rule); border-radius: 2px; padding: 1rem 1.25rem; margin-top: 1.25rem; }
+    .balance-box-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule); }
+    .balance-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); padding: 4px 0; }
+    .balance-row.total-row { font-weight: 600; color: var(--ink); border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 8px; font-family: 'Playfair Display', serif; font-size: 0.95rem; }
+    .balance-row.total-row span:last-child { color: var(--amber); }
+    .balance-row.highlight { color: var(--ink); font-weight: 500; }
+
+    /* Full balance list (no name match) */
+    .balance-list { margin-top: 0; }
+    .balance-list-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; border-bottom: 1px solid var(--parchment); color: var(--ink); }
+    .balance-list-row:last-child { border-bottom: none; }
+    .balance-list-row .name { font-weight: 500; }
+    .balance-list-row .amt { color: var(--amber); font-weight: 500; font-family: 'Playfair Display', serif; }
+    .balance-list-empty { font-size: 13px; color: var(--muted); font-style: italic; text-align: center; padding: 0.5rem 0; }
 
     .footer-rule { text-align: center; margin-top: 3rem; color: var(--rule); font-size: 13px; letter-spacing: 0.2em; }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -179,14 +184,18 @@
   <div class="payment-card" id="payment-card">
     <div class="card-title" style="justify-content:center;border-bottom:none;margin-bottom:0.25rem;"><span>✦</span> Order received!</div>
     <div class="payment-amount" id="payment-amount">$0.00</div>
-    <div class="payment-note" id="payment-note"></div>
+    <div class="payment-note">Please e-transfer to Grayden at <strong>graydena@gmail.com</strong> or pay in cash.</div>
+    <div id="balance-section"></div>
   </div>
 
   <div class="footer-rule">◆ &nbsp; ◆ &nbsp; ◆</div>
 </div>
 
 <script>
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzNV5bSswvNnbCasbYOMplN7zZHY1QZOmHvTmaLUJaDjSU-1Fj7_xQsq5-C_h_ix_WN/exec';
+  const SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzNV5bSswvNnbCasbYOMplN7zZHY1QZOmHvTmaLUJaDjSU-1Fj7_xQsq5-C_h_ix_WN/exec';
+
+  // !! REPLACE THIS with your Balances Apps Script Web App URL after setup !!
+  const BALANCES_URL = 'https://script.google.com/macros/s/AKfycbyCh3zRuLJeeU9kCoU0wDT10amFZPDqiW7q6Nluj1JNM0T9A47X5M3i8yvlfO8nZ55WHw/exec';
 
   const prices = { burger: 3.50, sausage: 3.50 };
   const qty = { burger: 0, sausage: 0 };
@@ -213,11 +222,9 @@
         const sub = q * prices[k];
         total += sub;
         lines += `<div class="summary-row"><span>${q}× ${labels[k]}</span><span>$${sub.toFixed(2)}</span></div>`;
-        const extras = [];
         if (k === 'burger' && document.getElementById('double-burger').checked) {
           const doubleExtra = q * 3.50;
           total += doubleExtra;
-          extras.push('double patty');
           lines += `<div class="summary-row"><span>↳ Double patty ×${q}</span><span>+$${doubleExtra.toFixed(2)}</span></div>`;
         }
         const otherExtras = [];
@@ -263,21 +270,26 @@
     };
 
     try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(order)
-      });
+      // Submit order and fetch balances at the same time
+      const [_, balancesRes] = await Promise.all([
+        fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(order)
+        }),
+        fetch(BALANCES_URL).then(r => r.json()).catch(() => ({ result: 'error', balances: [] }))
+      ]);
 
-      // Hide the form, show payment card
+      // Hide the form
       document.getElementById('order-form').style.display = 'none';
       document.getElementById('msg-error').style.display = 'none';
 
-      const formattedTotal = '$' + totalVal.toFixed(2);
-      document.getElementById('payment-amount').textContent = formattedTotal;
-      document.getElementById('payment-note').innerHTML =
-        'Your total for today is <strong>' + formattedTotal + '</strong>. Please e-transfer to Grayden at <strong>graydena@gmail.com</strong> or pay in cash.<br><br><em>Outstanding balances from previous orders are not recorded here.</em>';
+      // Show total
+      document.getElementById('payment-amount').textContent = '$' + totalVal.toFixed(2);
+
+      // Render balance section
+      renderBalanceSection(name, totalVal, balancesRes);
 
       document.getElementById('payment-card').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -287,6 +299,75 @@
       btn.disabled = false;
       btn.innerHTML = 'Place my order →';
     }
+  }
+
+  function renderBalanceSection(name, todayTotal, balancesRes) {
+    const section = document.getElementById('balance-section');
+    const nameLower = name.trim().toLowerCase();
+
+    // If balances couldn't be fetched, show nothing extra
+    if (!balancesRes || balancesRes.result !== 'success' || !balancesRes.balances) {
+      section.innerHTML = '<p style="font-size:12px;color:var(--muted);text-align:center;margin-top:1rem;font-style:italic;">Outstanding balances unavailable right now.</p>';
+      return;
+    }
+
+    const balances = balancesRes.balances;
+    const match = balances.find(b => b.name.toLowerCase() === nameLower);
+
+    if (match && match.balance > 0) {
+      // Name found and has a balance — show personalised breakdown
+      const grandTotal = match.balance + todayTotal;
+      section.innerHTML = `
+        <div class="balance-box">
+          <div class="balance-box-title">Your balance summary</div>
+          <div class="balance-row highlight">
+            <span>Today's order</span>
+            <span>$${todayTotal.toFixed(2)}</span>
+          </div>
+          <div class="balance-row">
+            <span>Previous outstanding balance</span>
+            <span>$${match.balance.toFixed(2)}</span>
+          </div>
+          <div class="balance-row total-row">
+            <span>Total owing</span>
+            <span>$${grandTotal.toFixed(2)}</span>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-style:italic;">Previous balances are updated periodically and may not reflect recent payments.</p>`;
+
+    } else if (match && match.balance === 0) {
+      // Name found, balance is zero
+      section.innerHTML = `
+        <div class="balance-box">
+          <div class="balance-box-title">Your balance summary</div>
+          <div class="balance-row highlight"><span>Today's order</span><span>$${todayTotal.toFixed(2)}</span></div>
+          <div class="balance-row"><span>Previous outstanding balance</span><span>$0.00</span></div>
+          <div class="balance-row total-row"><span>Total owing</span><span>$${todayTotal.toFixed(2)}</span></div>
+        </div>`;
+
+    } else {
+      // Name not found — show the full list so they can find themselves
+      const withBalances = balances.filter(b => b.balance > 0).sort((a,b) => a.name.localeCompare(b.name));
+      let listHTML = '';
+      if (withBalances.length === 0) {
+        listHTML = '<div class="balance-list-empty">No outstanding balances on record.</div>';
+      } else {
+        listHTML = withBalances.map(b =>
+          `<div class="balance-list-row"><span class="name">${esc(b.name)}</span><span class="amt">$${b.balance.toFixed(2)}</span></div>`
+        ).join('');
+      }
+      section.innerHTML = `
+        <div class="balance-box" style="margin-top:1.25rem;">
+          <div class="balance-box-title">Outstanding balances</div>
+          <p style="font-size:12px;color:var(--muted);margin-bottom:0.75rem;">Your name wasn't found in the records — find yourself below if you have an outstanding balance.</p>
+          <div class="balance-list">${listHTML}</div>
+        </div>
+        <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px;font-style:italic;">Balances are updated periodically and may not reflect recent payments.</p>`;
+    }
+  }
+
+  function esc(str) {
+    return str.toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
   function showError(text) {
